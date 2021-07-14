@@ -15,7 +15,10 @@ const onSearch = e => {
   //???
 
   API.fetchImage(searchQuery)
-    .then(renderImageCard)
+    .then(response => {
+      renderImageCard(response);
+      renderLoadMoreBtn(response);
+    })
     .catch(error => console.log(error))
     .finally(() => form.reset());
 };
@@ -26,9 +29,14 @@ function renderImageCard(response) {
   //   console.log(response.total);
   const markup = imagesCardTpl(response);
   refs.cardContainer.innerHTML = markup;
+}
+
+function renderLoadMoreBtn(response) {
   const imageCount = refs.cardContainer.querySelectorAll('.gallery-item').length;
   const shouldDisplayLoadMoreBtn = imageCount < response.total;
   if (shouldDisplayLoadMoreBtn) {
     refs.loadMoreBtn.classList.remove('is-hidden');
+  } else {
+    refs.loadMoreBtn.classList.add('is-hidden');
   }
 }
