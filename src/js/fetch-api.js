@@ -3,32 +3,39 @@ import imagesCardTpl from '../templates/images_card.hbs';
 import API from './apiService';
 
 const refs = getRefs();
-// console.log('x', API.fetchImage);
-const onSearch = e => {
+let searchQuery;
+const onSearch = async e => {
   e.preventDefault();
   //сообщает User agent, что если событие не обрабатывается явно,
   //его действие по умолчанию не должно выполняться так, как обычно
-
-  const form = e.currentTarget;
-  //Определяет элемент, в котором в данный момент обрабатывается событие
-  const searchQuery = form.elements.query.value;
+  const isForm = e.target.id === 'search-form';
+  if (isForm) {
+    const form = e.currentTarget;
+    //Определяет элемент, в котором в данный момент обрабатывается событие
+    searchQuery = form.elements.query.value;
+  }
   //???
-
-  API.fetchImage(searchQuery)
-    .then(response => {
-      renderImageCard(response);
-      renderLoadMoreBtn(response);
-    })
-    .catch(error => console.log(error))
-    .finally(() => form.reset());
+  try {
+    const response = await API.fetchImage(searchQuery);
+    renderImageCard(response, isForm);
+    renderLoadMoreBtn(response);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 refs.searchForm.addEventListener('submit', onSearch);
+refs.loadMoreBtn.addEventListener('click', onSearch);
 
-function renderImageCard(response) {
+function renderImageCard(response, isForm) {
   //   console.log(response.total);
   const markup = imagesCardTpl(response);
-  refs.cardContainer.innerHTML = markup;
+  const shouldExtend = !isForm;
+  if (shouldExtend) {
+    refs.cardContainer.innerHTML += markup;
+  } else {
+    refs.cardContainer.innerHTML = markup;
+  }
 }
 
 function renderLoadMoreBtn(response) {
