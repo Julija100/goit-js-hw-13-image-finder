@@ -13,13 +13,19 @@
 
 <body>
   <form class="search-form" id="search-form">
-    <input type="text" name="query" autocomplete="off" placeholder="Search images..." />
+    <div>
+      <input type="text" name="query" autocomplete="off" placeholder="Search images..." />
+      <button type="submit" class="Search-btn">Search</button>
+    </div>
+
+    <ul class="gallery">
+      <!-- Список <li> с карточками изображений -->
+    </ul>
+
   </form>
-  <ul class="gallery">
-    <!-- Список <li> с карточками изображений -->
-  </ul>
-  <div class="js-card-container"></div>
-  <button type="submit" class="btn btn-primary">Load more</button>
+  <button id="gallary-load-more-btn" class="gallary-load-more is-hidden" type="button">Load more</button>
+
+
 
   <script src="./index.js"></script>
   <script src="../src/js/fetch-api.js"></script>

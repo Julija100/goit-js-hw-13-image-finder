@@ -1,24 +1,34 @@
+import getRefs from './getRefs';
 import imagesCardTpl from '../templates/images_card.hbs';
 import API from './apiService';
 
-const refs = {
-  cardContainer: document.querySelector('.js-card-container'),
-  searchForm: document.querySelector('.search-form'),
-};
-const onSubmit = e => {
+const refs = getRefs();
+// console.log('x', API.fetchImage);
+const onSearch = e => {
   e.preventDefault();
+  //сообщает User agent, что если событие не обрабатывается явно,
+  //его действие по умолчанию не должно выполняться так, как обычно
 
   const form = e.currentTarget;
+  //Определяет элемент, в котором в данный момент обрабатывается событие
   const searchQuery = form.elements.query.value;
+  //???
 
   API.fetchImage(searchQuery)
     .then(renderImageCard)
     .catch(error => console.log(error))
     .finally(() => form.reset());
 };
-refs.searchForm.addEventListener('submit', onSubmit);
 
-function renderImageCard(image) {
-  const markup = imagesCardTpl(image);
+refs.searchForm.addEventListener('submit', onSearch);
+
+function renderImageCard(response) {
+  //   console.log(response.total);
+  const markup = imagesCardTpl(response);
   refs.cardContainer.innerHTML = markup;
+  const imageCount = refs.cardContainer.querySelectorAll('.gallery-item').length;
+  const shouldDisplayLoadMoreBtn = imageCount < response.total;
+  if (shouldDisplayLoadMoreBtn) {
+    refs.loadMoreBtn.classList.remove('is-hidden');
+  }
 }
