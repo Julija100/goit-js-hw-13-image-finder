@@ -12,18 +12,25 @@
 </head>
 
 <body>
-  <form class="search-form" id="search-form">
-    <div>
-      <input type="text" name="query" autocomplete="off" placeholder="Search images..." />
-      <button type="submit" class="Search-btn">Search</button>
-    </div>
+  <div class="container">
+    <form class="search-form" id="search-form">
+      <div class="search-form-content">
 
-    <ul class="gallery">
-      <!-- Список <li> с карточками изображений -->
-    </ul>
+        <input class="input" type="text" name="query" autocomplete="off" placeholder="Search images..." />
+        <button type="submit" class="Search-btn button-style">Search</button>
 
-  </form>
-  <button id="gallary-load-more-btn" class="gallary-load-more is-hidden" type="button">Load more</button>
+
+      </div>
+
+      <ul class="gallery list">
+        <!-- Список <li> с карточками изображений -->
+      </ul>
+
+    </form>
+    <button id="gallary-load-more-btn" class="gallary-load-more button-style is-hidden" type="button">Load
+      more</button>
+
+  </div>
 
 
 
