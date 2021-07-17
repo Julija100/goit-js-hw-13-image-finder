@@ -3,6 +3,16 @@ import imagesCardTpl from '../templates/images_card.hbs';
 import API from './apiService';
 
 const refs = getRefs();
+
+function scrollToTheFirstPicture() {
+  const images = refs.cardContainer.querySelectorAll('.gallery-item');
+  const imageCount = images.length;
+  const firstPictureIndex = imageCount - 11;
+  const firstPicture = images[firstPictureIndex - 1];
+
+  firstPicture.scrollIntoView({ inline: 'nearest', behavior: 'smooth' });
+}
+
 let searchQuery;
 const onSearch = async e => {
   e.preventDefault();
@@ -14,11 +24,12 @@ const onSearch = async e => {
     //Определяет элемент, в котором в данный момент обрабатывается событие
     searchQuery = form.elements.query.value;
   }
-  //???
+
   try {
     const response = await API.fetchImage(searchQuery);
     renderImageCard(response, isForm);
     renderLoadMoreBtn(response);
+    scrollToTheFirstPicture();
   } catch (error) {
     console.log(error);
   }
@@ -47,3 +58,7 @@ function renderLoadMoreBtn(response) {
     refs.loadMoreBtn.classList.add('is-hidden');
   }
 }
+
+// refs.loadMoreBtn.addEventListener('click', scrollToTheFirstPicture);
+
+//imageCount - 11;
